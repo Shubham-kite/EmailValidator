@@ -1,111 +1,153 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="h-full">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Check email syntax, domain MX records, and common email risk indicators.">
-    <meta name="theme-color" content="#17191f">
-    <title>EmailVerify — Browser email checks</title>
+    <meta name="description" content="EmailVerify - BriteVerify & Postman Style Email Verification Tool">
+    <title>EmailVerify — Enterprise Email Verification</title>
     <link rel="stylesheet" href="./styles.css">
-    <script type="module" src="./app.mjs?v=2"></script>
+    <script type="module" src="./app.mjs?v=4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
-  <body>
-    <header class="topbar">
-      <a class="brand" href="./" aria-label="EmailVerify home">
-        <span class="brand-mark" aria-hidden="true">@</span>
-        <span>EmailVerify</span>
-      </a>
-      <span class="tag">JavaScript · GitHub Pages</span>
+  <body class="h-full flex flex-col bg-[#0f1117] text-[#e2e8f0] font-sans">
+
+    <!-- Top Navbar -->
+    <header class="h-16 bg-[#161b22] border-b border-[#30363d] flex items-center px-8 justify-between select-none">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#ff6c37] to-[#ff9f43] flex items-center justify-center font-bold text-white shadow-lg">
+          <i class="fa-solid fa-paper-plane text-sm"></i>
+        </div>
+        <div>
+          <span class="font-bold text-white text-base tracking-tight">EmailVerify Pro</span>
+          <span class="text-xs text-[#8b949e] ml-2">BriteVerify & Postman Edition</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button id="mode-brite" onclick="switchMode('brite')" class="px-4 py-2 rounded-lg bg-[#ff6c37] text-white text-xs font-semibold cursor-pointer transition shadow-md">
+          <i class="fa-solid fa-gauge mr-1.5"></i> BriteVerify Dashboard
+        </button>
+        <button id="mode-postman" onclick="switchMode('postman')" class="px-4 py-2 rounded-lg bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-[#8b949e] hover:text-white text-xs font-semibold cursor-pointer transition">
+          <i class="fa-solid fa-terminal mr-1.5"></i> Postman API Client
+        </button>
+      </div>
     </header>
 
-    <main>
-      <section class="intro">
-        <p class="eyebrow">EMAIL CHECKS, RIGHT IN YOUR BROWSER</p>
-        <h1>Check an email address</h1>
-        <p class="lead">
-          Validate syntax, look up the domain's MX records, and flag common
-          disposable, free-provider, and role-based addresses.
-        </p>
-        <p class="notice">
-          A domain check cannot confirm that a mailbox exists. Browser-only
-          hosting cannot perform SMTP mailbox probes or safely keep a
-          BriteVerify secret. DNS lookups send the domain name to Google Public
-          DNS; email addresses are not sent to a verification API.
-        </p>
-      </section>
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto p-8 overflow-y-auto">
 
-      <section class="workspace" aria-label="Email verification">
-        <div class="panel input-panel">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">SINGLE CHECK</p>
-              <h2>One address</h2>
-            </div>
-            <span class="method">CHECK</span>
-          </div>
-          <label for="single-email">Email address</label>
-          <div class="input-row">
-            <input id="single-email" type="email" placeholder="name@example.com" autocomplete="email">
-            <button id="verify-single" class="primary-button" type="button">Verify</button>
+      <!-- BRITEVERIFY MODE VIEW -->
+      <div id="view-brite" class="space-y-8">
+        <!-- Hero Search Section -->
+        <div class="text-center max-w-2xl mx-auto py-8">
+          <h1 class="text-4xl font-ext500 font-bold text-white tracking-tight mb-3">Verify Email Addresses Instantly</h1>
+          <p class="text-[#8b949e] text-sm mb-6">Real-time syntax validation, Google DoH MX lookups, disposable detection, and risk scoring.</p>
+
+          <div class="bg-[#161b22] p-3 rounded-2xl border border-[#30363d] shadow-2xl flex items-center space-x-3">
+            <div class="pl-3 text-[#8b949e]"><i class="fa-solid fa-envelope text-lg"></i></div>
+            <input id="single-email" type="email" placeholder="Enter email address (e.g. sasha.mogensen@boatyard.com)" class="bg-transparent flex-1 text-white text-base outline-none font-mono">
+            <button id="verify-single" class="bg-[#ff6c37] hover:bg-[#e05b2b] text-white font-bold px-8 py-3.5 rounded-xl text-sm cursor-pointer transition shadow-md flex items-center space-x-2">
+              <span>Verify Now</span>
+              <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
           </div>
 
-          <div class="section-heading bulk-heading">
-            <div>
-              <p class="eyebrow">BULK CHECK</p>
-              <h2>Multiple addresses</h2>
-            </div>
-            <span class="limit">Up to 50</span>
-          </div>
-          <label for="bulk-emails">Separate addresses with commas or new lines</label>
-          <textarea id="bulk-emails" rows="5" placeholder="first@example.com&#10;second@example.org"></textarea>
-          <button id="verify-bulk" class="secondary-button" type="button">Verify list</button>
-
-          <div class="presets">
-            <p class="eyebrow">QUICK EXAMPLES</p>
-            <button type="button" data-email="support@github.com">support@github.com</button>
-            <button type="button" data-email="test@mailinator.com">test@mailinator.com</button>
-          </div>
-
-          <div class="history">
-            <h2>Recent checks</h2>
-            <p class="muted">Kept only until this page is closed.</p>
-            <ul id="history-list"></ul>
+          <!-- Quick Presets -->
+          <div class="flex items-center justify-center space-x-3 mt-4 text-xs text-[#8b949e]">
+            <span>Try examples:</span>
+            <button data-email="sasha.mogensen@boatyard.com" class="preset-item px-3 py-1 rounded bg-[#21262d] hover:bg-[#30363d] text-white cursor-pointer border border-[#30363d]">sasha.mogensen@boatyard.com</button>
+            <button data-email="support@github.com" class="preset-item px-3 py-1 rounded bg-[#21262d] hover:bg-[#30363d] text-white cursor-pointer border border-[#30363d]">support@github.com</button>
+            <button data-email="test@mailinator.com" class="preset-item px-3 py-1 rounded bg-[#21262d] hover:bg-[#30363d] text-white cursor-pointer border border-[#30363d]">test@mailinator.com</button>
           </div>
         </div>
 
-        <div class="panel response-panel">
-          <div class="section-heading response-heading">
+        <!-- Result Dashboard Card (BriteVerify Style) -->
+        <div id="brite-result-card" class="hidden bg-[#161b22] border border-[#30363d] rounded-2xl p-8 shadow-2xl max-w-3xl mx-auto">
+          <div class="flex items-center justify-between border-b border-[#30363d] pb-6 mb-6">
             <div>
-              <p class="eyebrow">RESULT</p>
-              <h2>Verification details</h2>
+              <div class="text-xs uppercase text-[#8b949e] tracking-wider font-semibold">Verified Address</div>
+              <div id="bv-email" class="text-2xl font-bold text-white font-mono mt-1">user@example.com</div>
             </div>
-            <div class="response-meta">
-              <span id="send-btn" class="ready-indicator">Ready</span>
-              <span id="response-time"></span>
+            <div id="bv-status-badge" class="px-5 py-2 rounded-full text-sm font-extrabold uppercase tracking-widest bg-green-500/10 text-green-400 border border-green-500/30">
+              Valid
             </div>
           </div>
-          <div id="summary" class="summary" aria-live="polite">
-            <p class="empty-state">Submit an address to see its checks.</p>
-          </div>
-          <div class="json-heading">
-            <h3>JSON response</h3>
-            <span>Browser-generated</span>
-          </div>
-          <pre id="json-output" aria-live="polite">Waiting for a check...</pre>
-        </div>
-      </section>
 
-      <section class="limits">
-        <h2>What this check can tell you</h2>
-        <div class="limit-grid">
-          <p><strong>Syntax:</strong> checks the address structure and domain format.</p>
-          <p><strong>MX records:</strong> checks whether DNS lists mail servers for the domain.</p>
-          <p><strong>Risk flags:</strong> matches a small built-in list of disposable providers and role names.</p>
-          <p><strong>Not checked:</strong> mailbox existence, SMTP delivery, and BriteVerify status require a trusted server-side provider.</p>
+          <!-- Attribute Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+              <div class="text-xs text-[#8b949e]">Risk Level</div>
+              <div id="bv-risk" class="text-lg font-bold text-white mt-1 uppercase">Low</div>
+            </div>
+            <div class="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+              <div class="text-xs text-[#8b949e]">MX Records</div>
+              <div id="bv-mx" class="text-sm font-semibold text-[#7ee787] mt-1 truncate">Verified</div>
+            </div>
+            <div class="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+              <div class="text-xs text-[#8b949e]">Disposable</div>
+              <div id="bv-disp" class="text-sm font-semibold text-white mt-1">No</div>
+            </div>
+            <div class="bg-[#0d1117] p-4 rounded-xl border border-[#30363d]">
+              <div class="text-xs text-[#8b949e]">Response Time</div>
+              <div id="time-val" class="text-sm font-semibold text-white font-mono mt-1">0ms</div>
+            </div>
+          </div>
+
+          <!-- Reason / Details -->
+          <div class="bg-[#0d1117] p-4 rounded-xl border border-[#30363d] text-xs text-[#8b949e] font-mono" id="bv-reason">
+            Syntax is valid. Domain MX records verified via Google DoH.
+          </div>
         </div>
-      </section>
+
+        <!-- Recent History / Bulk Section -->
+        <div class="max-w-3xl mx-auto bg-[#161b22] border border-[#30363d] rounded-2xl p-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Verification History</h3>
+            <span class="text-xs text-[#8b949e]">Session memory only</span>
+          </div>
+          <ul id="history-list" class="space-y-2 list-none p-0 m-0">
+            <li class="text-xs text-[#777] italic py-2">No verification queries yet in this session.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- POSTMAN API MODE VIEW -->
+      <div id="view-postman" class="hidden h-full flex flex-col bg-[#181818] rounded-2xl border border-[#333] overflow-hidden">
+        <div class="p-3 bg-[#202020] border-b border-[#333] flex items-center space-x-3">
+          <div class="bg-[#ff6c37] text-white px-3 py-1.5 rounded font-bold text-xs">POST</div>
+          <div class="flex-1 flex items-center bg-[#2d2d2d] border border-[#3c3c3c] rounded px-3 py-1.5 text-white">
+            <span class="text-[#888] text-sm mr-1">https://shubham-kite.github.io</span>
+            <input type="text" value="/api/verify" class="bg-transparent flex-1 text-white text-sm outline-none" readonly>
+          </div>
+        </div>
+        <div class="p-4 bg-[#1e1e1e] border-b border-[#333] flex-1 overflow-y-auto">
+          <div class="text-xs text-[#888] mb-2">JSON Response Output</div>
+          <pre id="json-output" class="font-mono text-xs text-[#9cdcfe] whitespace-pre-wrap bg-[#111318] p-4 rounded border border-[#333] h-96 overflow-auto">Waiting for check...</pre>
+        </div>
+      </div>
+
+      <!-- Hidden elements for script compatibility -->
+      <div class="hidden">
+        <textarea id="bulk-emails"></textarea>
+        <button id="verify-bulk"></button>
+        <div id="summary"></div>
+      </div>
+
     </main>
 
-    <footer>Static JavaScript app · No account, API key, or server required</footer>
+    <script>
+      function switchMode(mode) {
+        if (mode === 'brite') {
+          document.getElementById('view-brite').classList.remove('hidden');
+          document.getElementById('view-postman').classList.add('hidden');
+          document.getElementById('mode-brite').className = "px-4 py-2 rounded-lg bg-[#ff6c37] text-white text-xs font-semibold cursor-pointer transition shadow-md";
+          document.getElementById('mode-postman').className = "px-4 py-2 rounded-lg bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-[#8b949e] hover:text-white text-xs font-semibold cursor-pointer transition";
+        } else {
+          document.getElementById('view-brite').classList.add('hidden');
+          document.getElementById('view-postman').classList.remove('hidden');
+          document.getElementById('mode-postman').className = "px-4 py-2 rounded-lg bg-[#ff6c37] text-white text-xs font-semibold cursor-pointer transition shadow-md";
+          document.getElementById('mode-brite').className = "px-4 py-2 rounded-lg bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-[#8b949e] hover:text-white text-xs font-semibold cursor-pointer transition";
+        }
+      }
+    </script>
   </body>
 </html>

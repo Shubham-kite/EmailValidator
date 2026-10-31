@@ -3,12 +3,12 @@
 A JavaScript email-domain checking tool hosted as a static site on GitHub Pages. It runs in the browser and needs no application server, package dependencies, or API key.
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://shubham-kite.github.io/EmailValidator/)
-[![Motion Video Presentation](https://img.shields.io/badge/🎬-Motion_Video-orange)](motion-video.html)
+[![Motion Video Presentation](https://img.shields.io/badge/🎬-Motion_Video-orange)](https://shubham-kite.github.io/EmailValidator/motion-video.html)
 
 ## 🎬 Motion Video & Demo Presentation
 
 Watch the interactive animated presentation and review the video production script:
-- **[Interactive Motion Video Player](motion-video.html)** (Open locally to view animated slides & feature walkthrough)
+- **[Interactive Motion Video Player](https://shubham-kite.github.io/EmailValidator/motion-video.html)** (Hosted live on GitHub Pages)
 - **[Video Storyboard & Script](video-storyboard.md)** (Scene-by-scene script and voiceover breakdown)
 
 ## What it checks
@@ -52,10 +52,11 @@ npm test
 
 ```text
 site/
-  app.mjs       Browser UI and bulk checks
-  index.html    GitHub Pages entry point
-  styles.css    App styling
-  verify.mjs    Syntax, classification, and DNS lookup logic
+  app.mjs         Browser UI and bulk checks
+  index.html      GitHub Pages entry point
+  motion-video.html Interactive motion video presentation player
+  styles.css      App styling
+  verify.mjs      Syntax, classification, and DNS lookup logic
 test/
   verify.test.mjs
 .github/workflows/pages.yml

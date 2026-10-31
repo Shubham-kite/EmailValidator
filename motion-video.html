@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmailVerify — Motion Video Presentation & Interactive Player</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { color-scheme: dark; }
+        body { background-color: #0f1117; color: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; }
+        .glow { box-shadow: 0 0 40px -10px rgba(255, 108, 55, 0.3); }
+        .slide { display: none; }
+        .slide.active { display: flex; animation: fadeIn 0.6s ease forwards; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between overflow-hidden select-none">
+
+    <!-- Top Header Bar -->
+    <header class="h-14 bg-[#161b22] border-b border-[#30363d] flex items-center px-6 justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#ff6c37] to-[#ff9f43] flex items-center justify-center font-bold text-white shadow-lg">
+                <i class="fa-solid fa-paper-plane text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-white tracking-wide text-sm">EmailVerify Motion Video Player</span>
+                <span class="text-xs text-[#8b949e] ml-2">Shubham-kite/EmailValidator</span>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4 text-xs">
+            <span class="px-3 py-1 rounded-full bg-[#21262d] border border-[#30363d] text-[#7ee787]">
+                <i class="fa-solid fa-circle text-[8px] mr-1.5 animate-pulse"></i> GitHub Pages Active
+            </span>
+            <a href="https://github.com/Shubham-kite/EmailValidator" target="_blank" class="px-3 py-1.5 rounded bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-white transition flex items-center space-x-1.5">
+                <i class="fa-brands fa-github"></i>
+                <span>View Repo</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Motion Video Stage -->
+    <main class="flex-1 flex items-center justify-center p-8 overflow-hidden">
+        <div class="w-full max-w-5xl h-[560px] bg-[#161b22] border border-[#30363d] rounded-2xl glow shadow-2xl flex flex-col overflow-hidden relative">
+
+            <!-- Slide 1: The Hook -->
+            <div id="slide-1" class="slide active flex-1 flex-col items-center justify-center p-12 text-center">
+                <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-[#ff6c37]/10 text-[#ff6c37] border border-[#ff6c37]/30 text-xs font-semibold mb-6">
+                    <i class="fa-solid fa-bolt"></i> <span>Zero Backend • 100% Client-Side JS</span>
+                </div>
+                <h1 class="text-5xl font-ext500 font-bold text-white tracking-tight mb-4 leading-tight">
+                    Verify Emails Like Postman.<br>No Server. No API Keys.
+                </h1>
+                <p class="text-[#8b949e] text-lg max-w-2xl mb-8">
+                    A lightning-fast, secure JavaScript email-domain checking tool hosted on GitHub Pages.
+                </p>
+                <div class="flex space-x-4 text-sm font-mono text-[#7ee787] bg-[#0d1117] px-6 py-3 rounded-xl border border-[#30363d]">
+                    <span>$ npm test</span>
+                    <span class="text-[#8b949e]"># Verified & Passing</span>
+                </div>
+            </div>
+
+            <!-- Slide 2: Architecture & Privacy -->
+            <div id="slide-2" class="slide flex-1 flex-col justify-center p-12">
+                <div class="text-center mb-8">
+                    <span class="text-xs uppercase tracking-widest text-[#ff6c37] font-bold">Privacy & Architecture</span>
+                    <h2 class="text-3xl font-bold text-white mt-1">Google DoH & Secure DNS</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto w-full">
+                    <div class="bg-[#0d1117] p-6 rounded-xl border border-[#30363d]">
+                        <div class="text-[#7ee787] text-xl mb-3"><i class="fa-solid fa-shield-halved"></i></div>
+                        <h3 class="font-semibold text-white mb-1">Total Privacy</h3>
+                        <p class="text-xs text-[#8b949e]">Queries domain name securely over Google Public DNS-over-HTTPS. No data saved.</p>
+                    </div>
+                    <div class="bg-[#0d1117] p-6 rounded-xl border border-[#30363d]">
+                        <div class="text-[#58a6ff] text-xl mb-3"><i class="fa-solid fa-server"></i></div>
+                        <h3 class="font-semibold text-white mb-1">Static GitHub Pages</h3>
+                        <p class="text-xs text-[#8b949e]">Runs entirely in the browser. Zero application servers or backend maintenance.</p>
+                    </div>
+                    <div class="bg-[#0d1117] p-6 rounded-xl border border-[#30363d]">
+                        <div class="text-[#d2a8ff] text-xl mb-3"><i class="fa-solid fa-code"></i></div>
+                        <h3 class="font-semibold text-white mb-1">Modular ESM Code</h3>
+                        <p class="text-xs text-[#8b949e]">Clean structure with `verify.mjs`, `app.mjs`, and robust Node.js unit tests.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Feature Demo -->
+            <div id="slide-3" class="slide flex-1 flex-col justify-center p-12">
+                <div class="text-center mb-8">
+                    <span class="text-xs uppercase tracking-widest text-[#ff6c37] font-bold">Deep Validation Engine</span>
+                    <h2 class="text-3xl font-bold text-white mt-1">Syntax, MX & Risk Indicators</h2>
+                </div>
+                <div class="max-w-3xl mx-auto w-full bg-[#0d1117] rounded-xl border border-[#30363d] p-6 font-mono text-xs space-y-3">
+                    <div class="flex justify-between text-[#8b949e] border-b border-[#30363d] pb-2">
+                        <span>Input: support@github.com</span>
+                        <span class="text-[#7ee787]">Status: 200 OK</span>
+                    </div>
+                    <div class="text-[#79c0ff]">&gt; Syntax: Valid RFC 5322 format</div>
+                    <div class="text-[#79c0ff]">&gt; MX Records: alt1.aspmx.l.google.com (Google DoH verified)</div>
+                    <div class="text-[#79c0ff]">&gt; Classification: Free Webmail / Role Account detected</div>
+                    <div class="flex justify-between items-center pt-2 border-t border-[#30363d]">
+                        <span class="text-white">Risk Indicator: <strong class="text-yellow-400">medium</strong></span>
+                        <span class="px-2 py-0.5 rounded bg-green-900/50 text-green-300 font-bold">Deliverable Domain</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Live Deployment -->
+            <div id="slide-4" class="slide flex-1 flex-col items-center justify-center p-12 text-center">
+                <div class="w-16 h-16 rounded-full bg-green-500/10 text-green-400 border border-green-500/30 flex items-center justify-center text-2xl mb-6">
+                    <i class="fa-solid fa-globe"></i>
+                </div>
+                <h2 class="text-4xl font-bold text-white mb-4">Ready to Use & Deploy</h2>
+                <p class="text-[#8b949e] max-w-xl mb-8 text-sm">
+                    Published instantly via GitHub Actions workflow to GitHub Pages. Open source under the MIT License.
+                </p>
+                <div class="bg-[#0d1117] px-6 py-3 rounded-xl border border-[#30363d] text-[#58a6ff] text-sm font-mono mb-8">
+                    https://shubham-kite.github.io/EmailValidator/
+                </div>
+                <a href="https://shubham-kite.github.io/EmailValidator/" target="_blank" class="bg-[#ff6c37] hover:bg-[#e05b2b] text-white font-semibold px-8 py-3 rounded-xl transition shadow-lg inline-flex items-center space-x-2">
+                    <i class="fa-solid fa-external-link-alt"></i>
+                    <span>Open Live Demo</span>
+                </a>
+            </div>
+
+            <!-- Playback Progress Bar -->
+            <div class="h-1 bg-[#21262d] w-full">
+                <div id="progress-bar" class="h-full bg-[#ff6c37] transition-all duration-300" style="width: 25%;"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Controls Footer -->
+    <footer class="h-16 bg-[#161b22] border-t border-[#30363d] flex items-center px-8 justify-between">
+        <div class="flex items-center space-x-4">
+            <button onclick="prevSlide()" class="w-9 h-9 rounded-lg bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-white flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-backward-step"></i>
+            </button>
+            <button onclick="togglePlay()" id="play-btn" class="w-11 h-11 rounded-lg bg-[#ff6c37] hover:bg-[#e05b2b] text-white flex items-center justify-center cursor-pointer transition shadow-md">
+                <i id="play-icon" class="fa-solid fa-pause"></i>
+            </button>
+            <button onclick="nextSlide()" class="w-9 h-9 rounded-lg bg-[#21262d] hover:bg-[#30363d] border border-[#30363d] text-white flex items-center justify-center cursor-pointer transition">
+                <i class="fa-solid fa-forward-step"></i>
+            </button>
+            <span id="slide-indicator" class="text-xs text-[#8b949e] font-mono ml-4">Scene 1 of 4</span>
+        </div>
+        <div class="text-xs text-[#8b949e] flex items-center space-x-2">
+            <span>Auto-play: <strong id="autoplay-status" class="text-green-400">ON</strong></span>
+        </div>
+    </footer>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 4;
+        let isPlaying = true;
+        let slideTimer = setInterval(autoAdvance, 6000);
+
+        function showSlide(n) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-${n}`).classList.add('active');
+            document.getElementById('slide-indicator').innerText = `Scene ${n} of ${totalSlides}`;
+            document.getElementById('progress-bar').style.width = `${(n / totalSlides) * 100}%`;
+            currentSlide = n;
+        }
+
+        function nextSlide() {
+            let next = currentSlide + 1;
+            if (next > totalSlides) next = 1;
+            showSlide(next);
+        }
+
+        function prevSlide() {
+            let prev = currentSlide - 1;
+            if (prev < 1) prev = totalSlides;
+            showSlide(prev);
+        }
+
+        function autoAdvance() {
+            if (isPlaying) {
+                nextSlide();
+            }
+        }
+
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const icon = document.getElementById('play-icon');
+            const status = document.getElementById('autoplay-status');
+            if (isPlaying) {
+                icon.className = "fa-solid fa-pause";
+                status.innerText = "ON";
+                status.className = "text-green-400";
+            } else {
+                icon.className = "fa-solid fa-play";
+                status.innerText = "OFF";
+                status.className = "text-yellow-400";
+            }
+        }
+    </script>
+</body>
+</html>

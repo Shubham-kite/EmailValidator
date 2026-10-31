@@ -2,6 +2,15 @@
 
 A JavaScript email-domain checking tool hosted as a static site on GitHub Pages. It runs in the browser and needs no application server, package dependencies, or API key.
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen)](https://shubham-kite.github.io/EmailValidator/)
+[![Motion Video Presentation](https://img.shields.io/badge/🎬-Motion_Video-orange)](motion-video.html)
+
+## 🎬 Motion Video & Demo Presentation
+
+Watch the interactive animated presentation and review the video production script:
+- **[Interactive Motion Video Player](motion-video.html)** (Open locally to view animated slides & feature walkthrough)
+- **[Video Storyboard & Script](video-storyboard.md)** (Scene-by-scene script and voiceover breakdown)
+
 ## What it checks
 
 - Basic email syntax and domain-label formatting.

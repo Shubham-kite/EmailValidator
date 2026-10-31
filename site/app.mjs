@@ -1,4 +1,4 @@
-import { parseBulkEmails, verifyEmail } from "./verify.mjs";
+import { parseBulkEmails, verifyEmail } from "./verify.mjs?v=2";
 
 const singleInput = document.querySelector("#single-email");
 const bulkInput = document.querySelector("#bulk-emails");

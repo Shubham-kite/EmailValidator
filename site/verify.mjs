@@ -96,7 +96,7 @@ export async function lookupMxRecords(domain, fetchImpl = globalThis.fetch) {
   url.searchParams.set("type", "MX");
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
+  const timeout = setTimeout(() => controller.abort(), 15000);
 
   try {
     const response = await fetchImpl(url, {

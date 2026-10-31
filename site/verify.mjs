@@ -147,6 +147,10 @@ export async function verifyEmail(email, fetchImpl = globalThis.fetch) {
       is_free: false,
       is_role: false,
     },
+    risk: {
+      level: "unknown",
+      flags: [],
+    },
     smtp: {
       success: false,
       code: null,
@@ -187,8 +191,52 @@ export async function verifyEmail(email, fetchImpl = globalThis.fetch) {
     }
   }
 
+  result.risk = assessRisk(result);
   result.responseTimeMs = Math.round((performance.now() - startedAt) * 100) / 100;
   return result;
+}
+
+function assessRisk(result) {
+  const flags = [];
+
+  if (!result.syntax.valid) {
+    flags.push("Invalid email syntax");
+    return { level: "high", flags };
+  }
+
+  if (result.classification.is_disposable) {
+    flags.push("Disposable email domain");
+  }
+  if (result.domain.checked && !result.domain.has_mx) {
+    flags.push("Domain has no MX records");
+  }
+  if (result.classification.is_role) {
+    flags.push("Role-based address");
+  }
+  if (result.classification.is_free) {
+    flags.push("Free email provider");
+  }
+  if (!result.domain.checked) {
+    flags.push("Domain MX status could not be confirmed");
+  }
+
+  if (
+    result.classification.is_disposable ||
+    (result.domain.checked && !result.domain.has_mx)
+  ) {
+    return { level: "high", flags };
+  }
+  if (result.classification.is_role) {
+    return { level: "medium", flags };
+  }
+  if (result.classification.is_free) {
+    return { level: "low", flags };
+  }
+  if (!result.domain.checked) {
+    return { level: "unknown", flags };
+  }
+
+  return { level: "low", flags };
 }
 
 export function parseBulkEmails(text, limit = 50) {

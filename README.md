@@ -7,6 +7,7 @@ A JavaScript email-domain checking tool hosted as a static site on GitHub Pages.
 - Basic email syntax and domain-label formatting.
 - Domain MX records using Google Public DNS over HTTPS.
 - Common disposable domains, free email providers, and role-based local parts.
+- A visible risk indicator (`high`, `medium`, `low`, or `unknown`) with the reasons included in the UI and JSON result.
 - Single addresses and batches of up to 50.
 
 An MX record only shows that a domain advertises mail servers. **It does not confirm that an individual mailbox exists or that a message will be delivered.** Browser-only GitHub Pages cannot connect to SMTP servers on port 25. BriteVerify also requires a private API key and must not be called directly from a public browser app. These checks are clearly identified as unavailable in the results.

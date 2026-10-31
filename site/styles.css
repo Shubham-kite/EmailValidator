@@ -124,6 +124,12 @@ input:focus, textarea:focus { border-color: #f16e3b; box-shadow: 0 0 0 3px rgb(2
 .result-card .status { color: #8bd1a9; font-weight: 700; }
 .result-card .status-no_mx, .result-card .status-invalid_syntax { color: #ff9d8e; }
 .result-card .status-unknown { color: #f4cb76; }
+.result-card .risk-indicator { font-weight: 800; letter-spacing: .04em; }
+.result-card .risk-high { color: #ff8175; }
+.result-card .risk-medium { color: #f4bd63; }
+.result-card .risk-low { color: #8bd1a9; }
+.result-card .risk-unknown { color: #a7adba; }
+.result-card .risk-flags { color: #d3b7a5; }
 .result-card .muted { color: #969ba6; }
 .json-heading { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 8px; color: #999eaa; font-size: 10px; }
 .json-heading h3 { font-size: 12px; }

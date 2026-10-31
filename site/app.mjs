@@ -85,6 +85,16 @@ function renderSummary(results) {
     status.className = `status status-${result.status}`;
     status.textContent = statusLabel(result.status);
 
+    const risk = document.createElement("p");
+    risk.className = `risk-indicator risk-${result.risk.level}`;
+    risk.textContent = `Risk: ${result.risk.level.toUpperCase()}`;
+
+    const riskFlags = document.createElement("p");
+    riskFlags.className = "risk-flags";
+    riskFlags.textContent = result.risk.flags.length
+      ? result.risk.flags.join(" · ")
+      : "No listed risk indicators.";
+
     const domain = document.createElement("p");
     domain.textContent = result.domain.checked
       ? result.domain.has_mx
@@ -92,17 +102,7 @@ function renderSummary(results) {
         : result.domain.reason
       : result.domain.reason;
 
-    const note = document.createElement("p");
-    note.className = "muted";
-    note.textContent = [
-      result.classification.is_disposable ? "Disposable domain" : "",
-      result.classification.is_free ? "Free email provider" : "",
-      result.classification.is_role ? "Role-based address" : "",
-    ]
-      .filter(Boolean)
-      .join(" · ") || "No listed risk flags.";
-
-    card.append(email, status, domain, note);
+    card.append(email, status, risk, riskFlags, domain);
     summary.append(card);
   }
 }

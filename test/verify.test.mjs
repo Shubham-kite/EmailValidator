@@ -46,6 +46,10 @@ test("looks up MX records and reports browser-only limitations", async () => {
   assert.deepEqual(result.domain.mx_records, ["mx1.example.com"]);
   assert.equal(result.classification.is_role, true);
   assert.equal(result.status, "mx_found");
+  assert.deepEqual(result.risk, {
+    level: "medium",
+    flags: ["Role-based address"],
+  });
   assert.match(result.smtp.message, /not available in a browser-only app/);
   assert.equal(result.briteverify.enabled, false);
 });
@@ -57,6 +61,10 @@ test("invalid addresses do not make a DNS request", async () => {
 
   assert.equal(result.status, "invalid_syntax");
   assert.equal(result.domain.checked, false);
+  assert.deepEqual(result.risk, {
+    level: "high",
+    flags: ["Invalid email syntax"],
+  });
 });
 
 test("surfaces DNS failures instead of reporting a successful check", async () => {
@@ -68,9 +76,13 @@ test("surfaces DNS failures instead of reporting a successful check", async () =
   assert.equal(result.status, "unknown");
   assert.equal(result.domain.checked, false);
   assert.match(result.domain.reason, /HTTP 503/);
+  assert.deepEqual(result.risk, {
+    level: "unknown",
+    flags: ["Domain MX status could not be confirmed"],
+  });
 });
 
-test("classifies disposable and free domains", async () => {
+test("classifies disposable domains as high risk", async () => {
   const fetchImpl = async () => ({
     ok: true,
     json: async () => ({ Status: 0, Answer: [] }),
@@ -79,6 +91,39 @@ test("classifies disposable and free domains", async () => {
 
   assert.equal(result.classification.is_disposable, true);
   assert.equal(result.classification.is_free, false);
+  assert.deepEqual(result.risk, {
+    level: "high",
+    flags: ["Disposable email domain", "Domain has no MX records"],
+  });
+});
+
+test("classifies free email providers as low risk", async () => {
+  const fetchImpl = async () => ({
+    ok: true,
+    json: async () => ({
+      Status: 0,
+      Answer: [{ type: 15, data: "10 mx.gmail.com." }],
+    }),
+  });
+  const result = await verifyEmail("person@gmail.com", fetchImpl);
+
+  assert.equal(result.classification.is_free, true);
+  assert.deepEqual(result.risk, {
+    level: "low",
+    flags: ["Free email provider"],
+  });
+});
+
+test("flags domains without MX records as high risk", async () => {
+  const result = await verifyEmail("person@example.com", async () => ({
+    ok: true,
+    json: async () => ({ Status: 0, Answer: [] }),
+  }));
+
+  assert.deepEqual(result.risk, {
+    level: "high",
+    flags: ["Domain has no MX records"],
+  });
 });
 
 test("parses bulk addresses and rejects lists over the configured limit", () => {

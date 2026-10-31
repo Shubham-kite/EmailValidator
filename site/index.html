@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Check email syntax, domain MX records, and common email risk indicators.">
+    <meta name="theme-color" content="#17191f">
+    <title>EmailVerify — Browser email checks</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="EmailVerify home">
+        <span class="brand-mark" aria-hidden="true">@</span>
+        <span>EmailVerify</span>
+      </a>
+      <span class="tag">JavaScript · GitHub Pages</span>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">EMAIL CHECKS, RIGHT IN YOUR BROWSER</p>
+        <h1>Check an email address</h1>
+        <p class="lead">
+          Validate syntax, look up the domain's MX records, and flag common
+          disposable, free-provider, and role-based addresses.
+        </p>
+        <p class="notice">
+          A domain check cannot confirm that a mailbox exists. Browser-only
+          hosting cannot perform SMTP mailbox probes or safely keep a
+          BriteVerify secret. DNS lookups send the domain name to Google Public
+          DNS; email addresses are not sent to a verification API.
+        </p>
+      </section>
+
+      <section class="workspace" aria-label="Email verification">
+        <div class="panel input-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">SINGLE CHECK</p>
+              <h2>One address</h2>
+            </div>
+            <span class="method">CHECK</span>
+          </div>
+          <label for="single-email">Email address</label>
+          <div class="input-row">
+            <input id="single-email" type="email" placeholder="name@example.com" autocomplete="email">
+            <button id="verify-single" class="primary-button" type="button">Verify</button>
+          </div>
+
+          <div class="section-heading bulk-heading">
+            <div>
+              <p class="eyebrow">BULK CHECK</p>
+              <h2>Multiple addresses</h2>
+            </div>
+            <span class="limit">Up to 50</span>
+          </div>
+          <label for="bulk-emails">Separate addresses with commas or new lines</label>
+          <textarea id="bulk-emails" rows="5" placeholder="first@example.com&#10;second@example.org"></textarea>
+          <button id="verify-bulk" class="secondary-button" type="button">Verify list</button>
+
+          <div class="presets">
+            <p class="eyebrow">QUICK EXAMPLES</p>
+            <button type="button" data-email="support@github.com">support@github.com</button>
+            <button type="button" data-email="test@mailinator.com">test@mailinator.com</button>
+          </div>
+
+          <div class="history">
+            <h2>Recent checks</h2>
+            <p class="muted">Kept only until this page is closed.</p>
+            <ul id="history-list"></ul>
+          </div>
+        </div>
+
+        <div class="panel response-panel">
+          <div class="section-heading response-heading">
+            <div>
+              <p class="eyebrow">RESULT</p>
+              <h2>Verification details</h2>
+            </div>
+            <div class="response-meta">
+              <span id="send-btn" class="ready-indicator">Ready</span>
+              <span id="response-time"></span>
+            </div>
+          </div>
+          <div id="summary" class="summary" aria-live="polite">
+            <p class="empty-state">Submit an address to see its checks.</p>
+          </div>
+          <div class="json-heading">
+            <h3>JSON response</h3>
+            <span>Browser-generated</span>
+          </div>
+          <pre id="json-output" aria-live="polite">Waiting for a check...</pre>
+        </div>
+      </section>
+
+      <section class="limits">
+        <h2>What this check can tell you</h2>
+        <div class="limit-grid">
+          <p><strong>Syntax:</strong> checks the address structure and domain format.</p>
+          <p><strong>MX records:</strong> checks whether DNS lists mail servers for the domain.</p>
+          <p><strong>Risk flags:</strong> matches a small built-in list of disposable providers and role names.</p>
+          <p><strong>Not checked:</strong> mailbox existence, SMTP delivery, and BriteVerify status require a trusted server-side provider.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer>Static JavaScript app · No account, API key, or server required</footer>
+  </body>
+</html>

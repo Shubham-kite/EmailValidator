@@ -1,145 +1,56 @@
-# EmailVerify Pro — Advanced Email Verification API & BriteVerify Client
+# EmailVerify
 
-A comprehensive, production-grade email verification tool built with **FastAPI**, a modern **Postman-inspired Web UI**, and integration with **BriteVerify API**. This tool performs deep email validation including syntax checking, DNS/MX record lookup, BriteVerify verification checks, disposable email blacklist detection, free email provider checks, role account identification, and live SMTP mailbox existence pinging.
+A JavaScript email-domain checking tool hosted as a static site on GitHub Pages. It runs in the browser and needs no application server, package dependencies, or API key.
 
----
+## What it checks
 
-## Features
+- Basic email syntax and domain-label formatting.
+- Domain MX records using Google Public DNS over HTTPS.
+- Common disposable domains, free email providers, and role-based local parts.
+- Single addresses and batches of up to 50.
 
-- **BriteVerify API Integration**: Seamlessly queries `bpi.briteverify.com` using your API key for enterprise-grade email validation status and reasons.
-- **Syntax Validation**: Validates email format against strict RFC 5322 standards.
-- **MX Record DNS Lookup**: Queries domain name servers to verify active Mail Exchange (MX) servers.
-- **Disposable Email Detection**: Automatically flags temporary and disposable email providers (e.g., Mailinator, TempMail).
-- **Free Webmail & Role Detection**: Identifies free webmail providers (Gmail, Yahoo, Outlook) and role-based accounts (`admin@`, `support@`, `sales@`).
-- **SMTP Mailbox Handshake**: Pings the destination mail server to check if the specific mailbox exists.
-- **Postman-Inspired Interactive UI**: A sleek, dark-mode developer workspace featuring request builders, JSON payload editors, response timers, status codes, and visual breakdown cards.
+An MX record only shows that a domain advertises mail servers. **It does not confirm that an individual mailbox exists or that a message will be delivered.** Browser-only GitHub Pages cannot connect to SMTP servers on port 25. BriteVerify also requires a private API key and must not be called directly from a public browser app. These checks are clearly identified as unavailable in the results.
 
----
+DNS requests send the domain name (not the full email address) to Google Public DNS. The app does not save checked addresses after the page is closed.
 
-## Project Structure
+## Live site
+
+After the GitHub Pages workflow succeeds, the site is available at:
+
+<https://shubham-kite.github.io/EmailValidator/>
+
+## Deploy on GitHub Pages
+
+The `Deploy GitHub Pages` workflow publishes the `site/` folder whenever a commit is pushed to `main`.
+
+1. In the GitHub repository, open **Settings → Pages**.
+2. Set the build and deployment source to **GitHub Actions** if it is not already selected.
+3. Push to `main` or run **Actions → Deploy GitHub Pages → Run workflow**.
+4. Open the Pages URL above after the workflow finishes.
+
+## Run and test locally
+
+Open `site/index.html` using a local static web server, or use GitHub Pages after deployment. DNS-over-HTTPS checks require an internet connection.
+
+Run the built-in Node.js tests (Node 20 or newer):
+
+```bash
+npm test
+```
+
+## Project structure
 
 ```text
-Email Verification/
-├── main.py              # FastAPI backend engine & BriteVerify integration
-├── requirements.txt     # Python dependencies
-├── test_verify.py       # Automated unit tests for verification logic
-├── .gitignore           # Git ignore rules
-├── README.md            # Project documentation
-├── render.yaml          # Render deployment configuration
-├── .env.example         # Environment variable template
-└── static/
-    └── index.html       # Postman-like web client interface
+site/
+  app.mjs       Browser UI and bulk checks
+  index.html    GitHub Pages entry point
+  styles.css    App styling
+  verify.mjs    Syntax, classification, and DNS lookup logic
+test/
+  verify.test.mjs
+.github/workflows/pages.yml
 ```
-
----
-
-## Installation & Quickstart
-
-### 1. Prerequisites
-- Python 3.8+ installed on your system.
-
-### 2. Install Dependencies
-Clone or download this repository, navigate to the project directory, and install the required packages:
-
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Configure BriteVerify (optional)
-Set `BRITEVERIFY_API_KEY` in your environment to enable the BriteVerify integration. If it is unset, local checks continue to work and the API response explains that the integration is not configured.
-
-For local development, set the variable in your shell before starting the app. In PowerShell, use `$env:BRITEVERIFY_API_KEY = "your-key"`; in bash, use `export BRITEVERIFY_API_KEY="your-key"`. `.env.example` is a variable template only; the app does not load `.env` files automatically. Do not commit `.env` or put API keys in source code.
-
-### 4. Run the Application
-Start the FastAPI backend server:
-
-```bash
-python main.py
-```
-
-The server will start at `http://localhost:8000`.
-
-### 5. Open the Postman-Like Client
-Open your browser and navigate to:
-```
-http://localhost:8000
-```
-Use the interactive UI to test single or bulk email verifications (including preset tests like `sasha.mogensen@boatyard.com`), view JSON responses, and inspect BriteVerify and SMTP diagnostics.
-
----
-
-## API Endpoints
-
-### `POST /api/verify`
-Verify a single email address with BriteVerify and local checks.
-
-**Request Body (JSON):**
-```json
-{
-  "email": "sasha.mogensen@boatyard.com",
-  "check_smtp": true,
-  "use_briteverify": true
-}
-```
-
-**Response Example:**
-```json
-{
-  "email": "sasha.mogensen@boatyard.com",
-  "syntax": { "valid": true, "reason": "Syntax is valid." },
-  "domain": {
-    "name": "boatyard.com",
-    "has_mx": true,
-    "mx_records": ["aspmx.l.google.com"]
-  },
-  "classification": {
-    "is_disposable": false,
-    "is_free": false,
-    "is_role": false
-  },
-  "smtp": {
-    "success": true,
-    "code": 250,
-    "message": "OK"
-  },
-  "briteverify": {
-    "enabled": true,
-    "success": true,
-    "data": {
-      "address": "sasha.mogensen@boatyard.com",
-      "status": "valid",
-      "account": "sasha.mogensen",
-      "domain": "boatyard.com",
-      "connected": "true",
-      "disposable": "false",
-      "role_address": "false"
-    }
-  },
-  "score": 95,
-  "status": "deliverable",
-  "responseTimeMs": 312.4
-}
-```
-
----
-
-## Deploying to Render
-
-This repository includes a Render Blueprint in `render.yaml`. Create a new Blueprint from the GitHub repository and set `BRITEVERIFY_API_KEY` in the Render service's environment settings if you want BriteVerify enabled. The web UI automatically uses the deployed site's URL.
-
-The service runs with:
-
-```bash
-uvicorn main:app --host 0.0.0.0 --port $PORT
-```
-
-SMTP checks may be unavailable on hosting providers that restrict outbound connections on port 25.
-
-## Publishing to GitHub
-
-The project repository is [Shubham-kite/EmailValidator](https://github.com/Shubham-kite/EmailValidator). Never commit API keys; configure them as environment variables in the deployment provider instead.
-
----
 
 ## License
-MIT License
+
+MIT
